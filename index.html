@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lungscope - Chest X-ray Detector</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #007BFF;
+      color: white;
+      text-align: center;
+      padding: 30px;
+    }
+
+    header h1 {
+      font-size: 3em;
+      margin: 0;
+    }
+
+    header p {
+      font-size: 1.2em;
+      margin-top: 10px;
+    }
+
+    .features {
+      margin: 40px auto;
+      padding: 20px;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    .features h2 {
+      color: #007BFF;
+    }
+
+    .features ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .features li {
+      margin: 10px 0;
+      font-size: 1.1em;
+    }
+
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+
+    footer p {
+      margin: 0;
+    }
+
+    /* Patient Cards Section */
+    .patient-cards {
+      margin: 40px auto;
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .patient-card {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin: 15px;
+      padding: 20px;
+      width: 280px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .patient-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .patient-card .patient-name {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #007BFF;
+    }
+
+    .patient-card .patient-info {
+      margin-top: 10px;
+      font-size: 1.1em;
+    }
+
+    .patient-card .patient-condition {
+      font-weight: bold;
+      color: #ff5733;
+    }
+
+    .patient-card .patient-age {
+      font-size: 1.1em;
+      color: #333;
+    }
+
+    /* Modal Style */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding-top: 60px;
+      text-align: center;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      width: 50%;
+      border-radius: 8px;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Welcome to Lungscope</h1>
+    <p>Your reliable chest X-ray detection tool.</p>
+  </header>
+
+  <section class="features">
+    <h2>Features</h2>
+    <ul>
+      <li>Detect pneumonia and other lung conditions from X-rays.</li>
+      <li>Provides accurate results for medical professionals.</li>
+      <li>Easy-to-use interface for patients and doctors.</li>
+    </ul>
+  </section>
+
+  <section class="patient-cards">
+    <div class="patient-card" onclick="openModal('John Doe', 45, 'Pneumonia', '2025-01-21')">
+      <div class="patient-name">John Doe</div>
+      <div class="patient-info">
+        <p class="patient-age">Age: 45</p>
+        <p class="patient-condition">Condition: Pneumonia</p>
+      </div>
+    </div>
+
+    <div class="patient-card" onclick="openModal('Jane Smith', 38, 'Normal', '2025-01-20')">
+      <div class="patient-name">Jane Smith</div>
+      <div class="patient-info">
+        <p class="patient-age">Age: 38</p>
+        <p class="patient-condition">Condition: Normal</p>
+      </div>
+    </div>
+
+    <div class="patient-card" onclick="openModal('Emily Johnson', 50, 'Pneumonia', '2025-01-19')">
+      <div class="patient-name">Emily Johnson</div>
+      <div class="patient-info">
+        <p class="patient-age">Age: 50</p>
+        <p class="patient-condition">Condition: Pneumonia</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal -->
+  <div id="patientModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="modalName">Patient Name</h2>
+      <p id="modalAge">Age: 0</p>
+      <p id="modalCondition">Condition: </p>
+      <p id="modalDiagnosisDate">Diagnosis Date: </p>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 Lungscope. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Open the Modal and display patient details
+    function openModal(name, age, condition, date) {
+      document.getElementById('modalName').innerText = name;
+      document.getElementById('modalAge').innerText = 'Age: ' + age;
+      document.getElementById('modalCondition').innerText = 'Condition: ' + condition;
+      document.getElementById('modalDiagnosisDate').innerText = 'Diagnosis Date: ' + date;
+      document.getElementById('patientModal').style.display = 'block';
+    }
+
+    // Close the Modal
+    function closeModal() {
+      document.getElementById('patientModal').style.display = 'none';
+    }
+
+    // Close the modal if clicked outside of the modal content
+    window.onclick = function (event) {
+      if (event.target === document.getElementById('patientModal')) {
+        closeModal();
+      }
+    }
+  </script>
+</body>
+
+</html>
